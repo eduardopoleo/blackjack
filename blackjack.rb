@@ -1,3 +1,6 @@
+#IMP: I decided to use a hash for the deck and the players hands.
+#This changes the code quite substantially compare to Chris solution.
+
 #Chooses a card from the deck randomly, updates the deck and adds it to the corresponding player hand
 def deal_card(current_deck,hand)
 	suit=current_deck.keys.sample
@@ -43,6 +46,7 @@ def play_again
 	valid_answer=false
 	# The while is necesary in case that the user enters an non-valid answer (e.g ghqwerfds)
 	while valid_answer==false
+		puts " "
 		puts "Would you like to play again: (Y/N)"
 		answer=gets.chomp.capitalize
 		if answer == "Y"
@@ -59,29 +63,37 @@ def play_again
 end
 
 # It display the hand in a more human-readable way
-def display_hand(hand)
-	hand.each do |suit,values|
+def display_hand(player_name,player_hand, dealer_hand)
+	puts "Welcome to my awesome BlackJack game"
+	puts " "
+	puts "---------#{player_name}'s hand----------"
+	puts " "
+	player_hand.each do |suit,values|
 		values.each do |value|
 			puts "#{value} of #{suit}"
 		end
 	end
 	puts " "
-	puts "Acumulated score: #{calculate_score(hand)}"
+	puts "Acumulated score: #{calculate_score(player_hand)}"
+	puts " "
+
+	puts "---------Dealer's hand----------"
+	puts " "
+	dealer_hand.each do |suit,values|
+		values.each do |value|
+			puts "#{value} of #{suit}"
+		end
+	end
+	puts " "
+	puts "Acumulated score: #{calculate_score(dealer_hand)}"
 	puts " "
 end
-
-def greetings
-	puts "Welcome to my awesome BlackJack game"
-	puts " "
-	puts "---------Your Hand----------"
-	puts " "
-end
-
+system('clear')
+puts "Hey, before we begin tell me your name :) !"
+player_name=gets.chomp.capitalize
 #Main program. Controls the flow of the game
 keep_playing=true
 while keep_playing==true
-	system("clear")
-	greetings
 # Initializing variables
 	hit_me=true
 # Deck initially has all possible cards
@@ -94,12 +106,25 @@ while keep_playing==true
 	
 # Dealer deals two cards to the player and the score is calculated and displayed
 	2.times{deal_card(deck,player_hand)}
+	2.times{deal_card(deck,dealer_hand)}
 	player_score=calculate_score(player_hand)
-	display_hand(player_hand)
-# Check if player won with BlackJack
+	dealer_score=calculate_score(dealer_hand)
+	
+	system("clear")
+	display_hand(player_name,player_hand,dealer_hand)
+
+#Check if dealer scored blackjack first
+if dealer_score==21
+		puts "The dealer got BlackJack!. You lost and he destroyed you!"
+		if play_again
+			next
+		else
+			break
+		end
+	end
+# Check if player scored BlackJack
 	if player_score==21
 		puts "You got a BlackJack! You've won"
-		
 		if play_again
 			next
 		else
@@ -115,9 +140,8 @@ while keep_playing==true
 		if another_card == "Y"
 			deal_card(deck,player_hand)
 			player_score=calculate_score(player_hand)
-			system("clear")
-			greetings
-			display_hand(player_hand)
+			system('clear')
+			display_hand(player_name,player_hand,dealer_hand)
 		elsif another_card == "N"
 			hit_me=false
 		else
@@ -139,34 +163,13 @@ while keep_playing==true
 		end
 	end
 
-	# The dealer's turn begin
-	system("clear")
-	greetings
-	display_hand(player_hand)
-
-	puts "---------Dealer's Hand----------"
-	puts " "
-
-	2.times{deal_card(deck,dealer_hand)}
-	dealer_score=calculate_score(dealer_hand)
-
-	if dealer_score==21
-		display_hand(dealer_hand)
-		puts "The dealer got BlackJack!. You lost and he destroyed you!"
-		
-		if play_again
-			next
-		else
-			break
-		end
-	end
-
 	while dealer_score<17
 		deal_card(deck,dealer_hand)
 		dealer_score=calculate_score(dealer_hand)
 	end
 
-	display_hand(dealer_hand)
+	system('clear')
+	display_hand(player_name,player_hand,dealer_hand)
 
 	if dealer_score>21
 		puts "The dealer has busted you won"
