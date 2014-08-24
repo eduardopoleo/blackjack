@@ -58,10 +58,30 @@ def play_again
 	keep_playing
 end
 
+# It display the hand in a more human-readable way
+def display_hand(hand)
+	hand.each do |suit,values|
+		values.each do |value|
+			puts "#{value} of #{suit}"
+		end
+	end
+	puts " "
+	puts "Acumulated score: #{calculate_score(hand)}"
+	puts " "
+end
+
+def greetings
+	puts "Welcome to my awesome BlackJack game"
+	puts " "
+	puts "---------Your Hand----------"
+	puts " "
+end
+
 #Main program. Controls the flow of the game
 keep_playing=true
 while keep_playing==true
-
+	system("clear")
+	greetings
 # Initializing variables
 	hit_me=true
 # Deck initially has all possible cards
@@ -75,8 +95,7 @@ while keep_playing==true
 # Dealer deals two cards to the player and the score is calculated and displayed
 	2.times{deal_card(deck,player_hand)}
 	player_score=calculate_score(player_hand)
-	p player_hand, player_score
-
+	display_hand(player_hand)
 # Check if player won with BlackJack
 	if player_score==21
 		puts "You got a BlackJack! You've won"
@@ -96,14 +115,15 @@ while keep_playing==true
 		if another_card == "Y"
 			deal_card(deck,player_hand)
 			player_score=calculate_score(player_hand)
-			p player_hand, player_score 
+			system("clear")
+			greetings
+			display_hand(player_hand)
 		elsif another_card == "N"
-			break
+			hit_me=false
 		else
 			puts "Sorry I did not hear you clearly. Could you repeat?"
 		end
-
-#   Check if the played busted
+#   Check if the player has busted
 		if player_score>21
 			hit_me=false
 		end
@@ -120,14 +140,18 @@ while keep_playing==true
 	end
 
 	# The dealer's turn begin
-	puts "---------Dealer's Turn----------"
+	system("clear")
+	greetings
+	display_hand(player_hand)
+
+	puts "---------Dealer's Hand----------"
+	puts " "
 
 	2.times{deal_card(deck,dealer_hand)}
 	dealer_score=calculate_score(dealer_hand)
 
-	p dealer_hand, dealer_score
-
 	if dealer_score==21
+		display_hand(dealer_hand)
 		puts "The dealer got BlackJack!. You lost and he destroyed you!"
 		
 		if play_again
@@ -141,7 +165,8 @@ while keep_playing==true
 		deal_card(deck,dealer_hand)
 		dealer_score=calculate_score(dealer_hand)
 	end
-	p dealer_hand, dealer_score
+
+	display_hand(dealer_hand)
 
 	if dealer_score>21
 		puts "The dealer has busted you won"
