@@ -114,7 +114,7 @@ while keep_playing==true
   display_hand(player_name,player_hand,dealer_hand)
 
 #Check if dealer scored blackjack first
-if dealer_score==21
+  if dealer_score==21
     puts "The dealer got BlackJack!. You lost and he destroyed you!"
     if play_again
       next
@@ -148,7 +148,7 @@ if dealer_score==21
       puts "Sorry I did not hear you clearly. Could you repeat?"
     end
 #   Check if the player has busted
-    if player_score>21
+    if player_score>=21
       hit_me=false
     end
   end
@@ -185,7 +185,7 @@ if dealer_score==21
 
   if play_again
       next
-    else
+  else
       break
   end
 end
