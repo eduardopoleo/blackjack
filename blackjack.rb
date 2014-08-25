@@ -24,12 +24,12 @@ def calculate_score(hand)
 			else
 				ace_counter+=1
 			end
-		end		
+		end   
 	end
 	# Aces value are estimated after adding the other cards with fixed value. 
 	# Aces value are set to 1 or 11 depending on what's more convinient for the player. 
 	while ace_counter>0
-		if total_value+11<=21	
+		if total_value+11<=21 
 			total_value+=11
 		else
 			total_value+=1
@@ -58,7 +58,7 @@ def play_again
 		else
 			puts "Please give me a valid answer!"
 		end
-	end	
+	end 
 	keep_playing
 end
 
@@ -178,7 +178,7 @@ if dealer_score==21
 	else
 		if player_score>dealer_score
 			puts "Your score is higher. You won"
-		elsif dealer_score>=player_score	
+		elsif dealer_score>=player_score  
 			puts "The dealer beat you ass to the floor"
 		end
 	end
